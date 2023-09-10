@@ -8,6 +8,13 @@ class CustomUserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ['id', 'username', 'email', 'phone_number', 'age', 'created_at']
 
+class UserRegistrationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('username', 'email', 'phone_number', 'age', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
+
+
 class TodoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Todo
