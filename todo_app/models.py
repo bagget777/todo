@@ -1,14 +1,10 @@
-# todo_app/models.py
-
-from django.db import models
-from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from .validators import validate_phone_number
 
 class CustomUser(AbstractUser):
     phone_number = models.CharField(max_length=15, unique=True, validators=[validate_phone_number])
-    age = models.PositiveIntegerField()
+    age = models.PositiveIntegerField(blank=True, null=True)
 
 class Todo(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
