@@ -11,4 +11,6 @@ router.register(r'todos', TodoViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('register/', UserRegistrationView.as_view(), name='register'),
+    path('todos/delete_all/', TodoViewSet.as_view({'delete': 'delete_all'}), name='delete-all-todos')
+    
 ]

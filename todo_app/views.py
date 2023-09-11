@@ -3,10 +3,11 @@ from rest_framework import generics, viewsets
 from .models import CustomUser, Todo
 from .serializers import CustomUserSerializer, TodoSerializer
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import UserRegistrationSerializer
+from rest_framework.decorators import action
+
 
 class UserRegistrationView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
@@ -27,3 +28,23 @@ class TodoViewSet(viewsets.ModelViewSet):
     queryset = Todo.objects.all()
     serializer_class = TodoSerializer
     permission_classes = [IsAuthenticated]
+    
+
+    def get_queryset(self):
+
+        user = self.request.user
+
+        queryset = Todo.objects.filter(user=user)
+
+        return queryset
+
+    @action(detail=False, methods=['delete'])
+    def delete_all(self, request):
+
+        user = self.request.user
+
+        Todo.objects.filter(user=user).delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
